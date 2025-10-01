@@ -1,0 +1,129 @@
+import { CommonModule } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+import { environment } from '../../environments/environment';
+
+type Note = {
+  _id?: string;
+  title: string;
+  content?: string;
+  tags?: string[];
+  pinned?: boolean;
+  color?: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+@Component({
+  standalone: true,
+  selector: 'app-notes-page',
+  imports: [CommonModule, FormsModule, HttpClientModule],
+  templateUrl: './notes.page.html',
+  styleUrls: ['./notes.page.scss']
+})
+export class NotesPage {
+  private http = inject(HttpClient);
+  notes = signal<Note[]>([]);
+  loading = signal<boolean>(false);
+  error = signal<string | null>(null);
+  query: string = '';
+  private searchTimer: any;
+
+  // form state
+  form = signal<Note>({ title: '', content: '', tags: [], color: '#8b5cf6', pinned: false });
+  editingId = signal<string | null>(null);
+
+  ngOnInit() {
+    this.fetchNotes();
+  }
+
+  async fetchNotes() {
+    this.loading.set(true);
+    this.error.set(null);
+    try {
+      const params = this.query ? { params: { q: this.query } } : {};
+      const response = await firstValueFrom(this.http.get<Note[]>(${environment.apiUrl}/notes, params));
+      this.notes.set(response ?? []);
+    } catch (e: any) {
+      console.error('Failed to fetch notes:', e);
+      this.error.set(e?.message || 'Failed to load notes. Please try again later.');
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  debouncedSearch() {
+    clearTimeout(this.searchTimer);
+    this.searchTimer = setTimeout(() => this.fetchNotes(), 300);
+  }
+
+  async saveNote() {
+    const current = this.form();
+    
+    // Validation
+    if (!current.title.trim()) {
+      this.error.set('Title is required');
+      return;
+    }
+    
+    this.loading.set(true);
+    this.error.set(null);
+    
+    try {
+      if (this.editingId()) {
+        const response = await firstValueFrom(
+          this.http.put<Note>(${environment.apiUrl}/notes/, current)
+        );
+        this.notes.set(this.notes().map(n => (n._id === response._id ? response : n)));
+      } else {
+        const response = await firstValueFrom(this.http.post<Note>(${environment.apiUrl}/notes, current));
+        if (response) this.notes.set([response, ...this.notes()]);
+      }
+      this.resetForm();
+    } catch (e: any) {
+      console.error('Failed to save note:', e);
+      this.error.set(e?.message || 'Failed to save note. Please try again later.');
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  editNote(note: Note) {
+    this.editingId.set(note._id || null);
+    this.form.set({
+      title: note.title,
+      content: note.content || '',
+      tags: note.tags || [],
+      pinned: note.pinned || false,
+      color: note.color || '#8b5cf6'
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async deleteNote(id?: string) {
+    if (!id) return;
+    const ok = confirm('Are you sure you want to delete this note? This action cannot be undone.');
+    if (!ok) return;
+    
+    this.loading.set(true);
+    this.error.set(null);
+    
+    try {
+      await firstValueFrom(this.http.delete(${environment.apiUrl}/notes/));
+      this.notes.set(this.notes().filter(n => n._id !== id));
+    } catch (e: any) {
+      console.error('Failed to delete note:', e);
+      this.error.set(e?.message || 'Failed to delete note. Please try again later.');
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  resetForm() {
+    this.form.set({ title: '', content: '', tags: [], color: '#8b5cf6', pinned: false });
+    this.editingId.set(null);
+    this.error.set(null);
+  }
+}

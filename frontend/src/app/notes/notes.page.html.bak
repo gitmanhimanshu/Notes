@@ -1,0 +1,75 @@
+<div class="container">
+  <header class="header panel">
+    <div class="brand">
+      <div class="logo">📝</div>
+      <div>
+        <h2>Notes</h2>
+        <small class="muted">Fast, minimal notes. Keep track of ideas.</small>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="search-container">
+        <input class="search" placeholder="Search notes..." [(ngModel)]="query" (ngModelChange)="debouncedSearch()" />
+        <i class="search-icon">🔍</i>
+      </div>
+      <button class="new-note-btn" (click)="resetForm()">
+        <span class="plus-icon">+</span> New Note
+      </button>
+    </div>
+  </header>
+
+  <section class="panel editor glass">
+    <form (ngSubmit)="saveNote()">
+      <div class="row">
+        <input class="title-input" placeholder="Note Title" [(ngModel)]="form().title" name="title" required />
+      </div>
+      <div class="row">
+        <textarea class="content-textarea" placeholder="Write your note content here..." [(ngModel)]="form().content" name="content" rows="5"></textarea>
+      </div>
+      <div class="row cols">
+        <label class="checkbox-label">
+          <input type="checkbox" [(ngModel)]="form().pinned" name="pinned" />
+          <span class="checkmark"></span>
+          Pinned
+        </label>
+        <label class="color-label">
+          Color
+          <input type="color" [(ngModel)]="form().color" name="color" class="color-picker" />
+        </label>
+      </div>
+      <div class="actions">
+        <button type="submit" class="save-btn">{{ editingId() ? 'Update' : 'Add' }} Note</button>
+        <button type="button" class="secondary cancel-btn" (click)="resetForm()" *ngIf="editingId()">Cancel</button>
+      </div>
+    </form>
+  </section>
+
+  <div *ngIf="loading()" class="muted loading">Loading...</div>
+  <div *ngIf="error()" class="error">{{ error() }}</div>
+
+  <div class="notes-grid">
+    <div class="note panel card" *ngFor="let n of notes()" [style.border-top-color]="n.color">
+      <div class="accent" [style.background]="n.color"></div>
+      <div class="note-header">
+        <h3 class="note-title">{{ n.title }}</h3>
+        <div class="spacer"></div>
+        <span class="pin" *ngIf="n.pinned">📌</span>
+      </div>
+      <p class="note-content">{{ n.content }}</p>
+      <div class="note-meta">
+        <span class="note-date" *ngIf="n.updatedAt">{{ n.updatedAt | date:'short' }}</span>
+      </div>
+      <div class="note-actions">
+        <button class="edit-btn" (click)="editNote(n)">Edit</button>
+        <button class="delete-btn" (click)="deleteNote(n._id)">Delete</button>
+      </div>
+    </div>
+    
+    <!-- Empty state -->
+    <div class="empty-state panel" *ngIf="notes().length === 0 && !loading()">
+      <div class="empty-icon">📝</div>
+      <h3>No notes yet</h3>
+      <p>Create your first note using the form above</p>
+    </div>
+  </div>
+</div>

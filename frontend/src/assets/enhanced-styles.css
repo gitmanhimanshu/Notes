@@ -1,0 +1,268 @@
+/* Enhanced styles for the notes app */
+
+/* Enhanced header styling */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  animation: fadeIn 0.3s ease;
+}
+
+.brand { 
+  display: flex; 
+  align-items: center; 
+  gap: 1rem; 
+}
+
+.logo { 
+  width: 48px; 
+  height: 48px; 
+  display: grid; 
+  place-items: center; 
+  border-radius: 14px; 
+  background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(34,211,238,0.2));
+  border: 1px solid rgba(139,92,246,0.3);
+  font-size: 1.5rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.muted { 
+  color: var(--muted); 
+  font-size: 0.9rem; 
+}
+
+/* Enhanced editor styling */
+.editor { 
+  padding: 1.5rem; 
+  margin-bottom: 2rem; 
+  animation: fadeIn 0.3s ease;
+}
+
+.row { 
+  margin-bottom: 1.25rem; 
+}
+
+.row.cols { 
+  display: flex; 
+  gap: 1.5rem; 
+  align-items: center; 
+  flex-wrap: wrap;
+}
+
+.actions { 
+  display: flex; 
+  gap: 0.75rem; 
+  align-items: center; 
+}
+
+.search { 
+  min-width: 280px; 
+  padding: 0.75rem 1rem;
+  background: rgba(255,255,255,0.08);
+}
+
+/* Enhanced button styling */
+button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+}
+
+button.secondary { 
+  background: rgba(255,255,255,0.1);
+  color: var(--text);
+}
+
+button.secondary:hover { 
+  background: rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+}
+
+button.danger { 
+  background: linear-gradient(135deg, #ef4444, #f87171);
+  padding: 0.75rem 1.25rem;
+}
+
+/* Enhanced note grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.note { 
+  position: relative; 
+  padding: 1.25rem; 
+  overflow: hidden; 
+  border-radius: 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+  animation: fadeIn 0.3s ease;
+}
+
+.card:hover { 
+  transform: translateY(-5px); 
+  box-shadow: 0 20px 45px rgba(0,0,0,.4);
+  border-color: rgba(139,92,246,0.3);
+}
+
+.accent { 
+  position: absolute; 
+  inset: 0; 
+  height: 8px; 
+  background: linear-gradient(90deg, var(--primary), var(--accent-1));
+  border-radius: 14px 14px 0 0;
+}
+
+.note-header { 
+  display: flex; 
+  align-items: center; 
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.spacer { 
+  flex: 1; 
+}
+
+.pin { 
+  font-size: 1.3rem; 
+  margin-left: 0.5rem;
+}
+
+.note-actions { 
+  display: flex; 
+  gap: 0.75rem; 
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Enhanced error styling */
+.error { 
+  color: var(--danger); 
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.2);
+  animation: fadeIn 0.3s ease;
+}
+
+/* Typography enhancements */
+h2 { 
+  margin: 0; 
+  font-weight: 700; 
+  font-size: 1.75rem;
+  background: linear-gradient(90deg, var(--text), var(--accent-1));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+h3 { 
+  margin: 0; 
+  font-weight: 600; 
+  font-size: 1.25rem;
+  color: var(--text);
+}
+
+.note p { 
+  color: var(--muted); 
+  display: -webkit-box; 
+  -webkit-line-clamp: 5; 
+  -webkit-box-orient: vertical; 
+  overflow: hidden;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Form enhancements */
+input, textarea {
+  padding: 0.85rem;
+  font-size: 1rem;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+input:focus, textarea:focus {
+  border-color: var(--accent-1);
+  box-shadow: 0 0 0 3px rgba(34,211,238,0.25);
+}
+
+label { 
+  color: var(--text); 
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Color picker styling */
+input[type='color'] {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Checkbox styling */
+input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+/* Responsive enhancements */
+@media (max-width: 900px) {
+  .header { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 1rem; 
+    padding: 1.25rem;
+  }
+  
+  .actions { 
+    width: 100%; 
+  }
+  
+  .search { 
+    flex: 1; 
+    min-width: 0; 
+    width: 100%; 
+  }
+  
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .grid { 
+    grid-template-columns: 1fr; 
+    gap: 1rem;
+  }
+  
+  .row.cols { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 1rem; 
+  }
+  
+  .editor {
+    padding: 1.25rem;
+  }
+  
+  .note {
+    padding: 1rem;
+  }
+}

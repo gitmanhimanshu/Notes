@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* New vibrant aurora theme */
+  --bg: #0b0f1a;
+  --panel: rgba(255,255,255,0.07);
+  --muted: #c9d1e8;
+  --text: #f6f8ff;
+  --primary: #8b5cf6; /* violet */
+  --primary-600: #7c3aed;
+  --accent-1: #22d3ee; /* cyan */
+  --accent-2: #f472b6; /* pink */
+  --accent-3: #34d399; /* green */
+  --border: rgba(255,255,255,0.14);
+}
+
+html, body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(139,92,246,0.25) 0%, transparent 60%),
+    radial-gradient(1000px 500px at 120% 0%, rgba(34,211,238,0.22) 0%, transparent 55%),
+    radial-gradient(1000px 700px at -10% 100%, rgba(244,114,182,0.18) 0%, transparent 65%),
+    var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+button {
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--primary), var(--accent-2));
+  color: white;
+  padding: .6rem .9rem;
+  cursor: pointer;
+  transition: background .2s ease, transform .05s ease;
+}
+button:hover { background: linear-gradient(135deg, var(--primary-600), var(--accent-2)); }
+button:active { transform: translateY(1px); }
+
+input, textarea, select {
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .6rem .75rem;
+  outline: none;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--accent-1); box-shadow: 0 0 0 3px rgba(34,211,238,0.15); }
+
+.container {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  backdrop-filter: blur(8px);
+}
